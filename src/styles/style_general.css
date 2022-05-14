@@ -7,6 +7,10 @@
     height: 667px;
     background: #FB6B6B;
     border: 1px solid #DBDBDB;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .zaprecall-title {
