@@ -5,53 +5,85 @@ import roundArrow from "../assets/setinha.png";
 
 export default function FlashcardsPage() {
 
-    const [revealQuestOrAffirm, setRevealQuestOrAffirm] = useState(false);
+    const [revealInquiry, setRevealInquiry] = useState(false);
     const [revealAnswer, setRevealAnswer] = useState(false);
 
     const deck = [
         {
-            questionOrAffirmation: "O que é JSX?",
-            answer: "Uma extensão de linguagem do JavaScript."
+            flashcardNumber: "1",
+            inquiry: "O que é JSX?",
+            answer: "Uma extensão de linguagem do JavaScript.",
+            revealInquiryButtonClicked: false,
+            revealAnswerButtonClicked: false
         },
         {
-            questionOrAffirmation: "O React é __",
-            answer: "uma biblioteca JavaScript para construção de interfaces."
+            flashcardNumber: "2",
+            inquiry: "O React é __",
+            answer: "uma biblioteca JavaScript para construção de interfaces.",
+            revealInquiryButtonClicked: false,
+            revealAnswerButtonClicked: false
         },
         {
-            questionOrAffirmation: "Os nomes dos componentes devem ser iniciados com __",
-            answer: "letra maiúscula."
+            flashcardNumber: "3",
+            inquiry: "Os nomes dos componentes devem ser iniciados com __",
+            answer: "letra maiúscula.",
+            revealInquiryButtonClicked: false,
+            revealAnswerButtonClicked: false
         },
         {
-            questionOrAffirmation: "Podemos colocar __ dentro do JSX.",
-            answer: "expressões"
+            flashcardNumber: "4",
+            inquiry: "Podemos colocar __ dentro do JSX.",
+            answer: "expressões",
+            revealInquiryButtonClicked: false,
+            revealAnswerButtonClicked: false
         },
         {
-            questionOrAffirmation: "O ReactDOM nos ajuda __",
-            answer: "interagindo com a DOM para colocar componentes React na mesma."
+            flashcardNumber: "5",
+            inquiry: "O ReactDOM nos ajuda __",
+            answer: "interagindo com a DOM para colocar componentes React na mesma.",
+            revealInquiryButtonClicked: false,
+            revealAnswerButtonClicked: false
         },
         {
-            questionOrAffirmation: "Usamos o npm para __",
-            answer: "gerenciar os pacotes necessários e suas dependências."
+            flashcardNumber: "6",
+            inquiry: "Usamos o npm para __",
+            answer: "gerenciar os pacotes necessários e suas dependências.",
+            revealInquiryButtonClicked: false,
+            revealAnswerButtonClicked: false
         },
         {
-            questionOrAffirmation: "Usamos props para __",
-            answer: "passar diferentes informações para componentes."
+            flashcardNumber: "7",
+            inquiry: "Usamos props para __",
+            answer: "passar diferentes informações para componentes.",
+            revealInquiryButtonClicked: false,
+            revealAnswerButtonClicked: false
         },
         {
-            questionOrAffirmation: "Usamos estado (state) para __",
-            answer: "dizer para o React quais informações quando atualizadas devem renderizar a tela novamente."
+            flashcardNumber: "8",
+            inquiry: "Usamos estado (state) para __",
+            answer: "dizer para o React quais informações quando atualizadas devem renderizar a tela novamente.",
+            revealInquiryButtonClicked: false,
+            revealAnswerButtonClicked: false
         }
     ];
 
     deck.sort(() => (Math.random() - 0.5));
     
-    let arrayOfSortedFourFlashcards = [];
+    // let arrayOfSortedFourFlashcards = [];
+    const [arrayOfSortedFourFlashcards, setArrayOfSortedFourFlashcards] = useState(deck);
 
     for (let i = 0; i < deck.length / 2; i++) {
         arrayOfSortedFourFlashcards.push(deck[i])
     }
 
-    console.log(arrayOfSortedFourFlashcards)
+
+    function RevealInquiryButtonClicked (index) {
+        const newArrayOfSortedFourFlashcards = [...arrayOfSortedFourFlashcards]; // cloning array to avoid modifying original //
+        const flashcard = newArrayOfSortedFourFlashcards[index] // creating index number from flashcardNumber object element of the deck array //
+        flashcard.revealInquiryButtonClicked = true;
+
+        setArrayOfSortedFourFlashcards(newArrayOfSortedFourFlashcards);
+    }
 
 	return (
         <section className = "page-setup">
@@ -60,10 +92,13 @@ export default function FlashcardsPage() {
                 <h1 className = "zaprecall-title">ZapRecall</h1>
             </div>
             <div className = "flashcard-column">
-                {arrayOfSortedFourFlashcards.map((flashcard) => (
+                {arrayOfSortedFourFlashcards.map((flashcardData, flashcardIndex) => (
                     <FlashcardsTemplate
-                    flashcardQuestOrAffirm = {flashcard.questionOrAffirmation}
-                    flashcardAnswer = {flashcard.answer}
+                    key = {flashcardNumber}
+                    flashcardNumber = {flashcardData.flashcardNumber}
+                    flashcardInquiry = {flashcardData.inquiry}
+                    flashcardAnswer = {flashcardData.answer}
+                    RevealInquiryButtonClicked = {RevealInquiryButtonClicked}
                     />
                 ))} 
             </div>
@@ -74,15 +109,13 @@ export default function FlashcardsPage() {
 	);
 
     function FlashcardsTemplate({flashcardQuestOrAffirm, flashcardAnswer}) {
-
-        console.log(revealQuestOrAffirm)
         return (
             <>
-                {revealQuestOrAffirm === false ? (
+                {revealInquiry === false ? (
                     <>
                         <div className = "flashcard-setup">
                             <h3>flashcard ?</h3> {/* correct flashcard number. */}
-                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                            <button onClick = {() => RevealInquiryButtonClicked()} className = "reveal-inquiry-button">
                                 <img src = "./assets/Vectortriangular-arrow.png"/> {/* render ion icon correctly. */}
                             </button>
                         </div>
@@ -97,7 +130,7 @@ export default function FlashcardsPage() {
                     <>
                         <div className = "flashcard-setup hidden">
                             <h3>flashcard ?</h3> {/* correct flashcard number. */}
-                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                            <button onClick = {() => Revealinquiry()} className = "reveal-question-or-affirmation-button">
                                 <img src = "./assets/Vectortriangular-arrow.png"/> {/* render ion icon correctly. */}
                             </button>
                         </div>
@@ -114,8 +147,8 @@ export default function FlashcardsPage() {
         );
     }
 
-    function RevealQuestionOrAffirmation() {
-        setRevealQuestOrAffirm(true);
+    function Revealinquiry() {
+        setRevealInquiry(true);
     }
 
     function RevealAnswer({flashcardQuestOrAffirm, flashcardAnswer}) {
@@ -128,13 +161,13 @@ export default function FlashcardsPage() {
                     <>
                         <div className = "flashcard-setup hidden">
                             <h3>flashcard ?</h3> {/* correct flashcard number. */}
-                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                            <button onClick = {() => Revealinquiry()} className = "reveal-question-or-affirmation-button">
                             <img src = "./assets/Vectortriangular-arrow.png"/> {/* render ion icon correctly. */}
                             </button>
                         </div>
                         <div className = "question-or-affirmation-container">
                             <p>{flashcardQuestOrAffirm}</p>
-                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                            <button onClick = {() => Revealinquiry()} className = "reveal-question-or-affirmation-button">
                             <img src = "./assets/Vectortriangular-arrow.png"/> {/* render ion icon correctly. */}
                         </button>
                         </div>
@@ -159,13 +192,13 @@ export default function FlashcardsPage() {
         function MarkedRememberanceLevel(props) {
             if (props === "Não lembrei") {
                 ReplaceFlashcardBackFace("red-status");
-                setRevealQuestOrAffirm(false);
+                setRevealInquiry(false);
             } else if (props === "Quase não lembrei") {
                 ReplaceFlashcardBackFace("yellow-status");
-                setRevealQuestOrAffirm(false);
+                setRevealInquiry(false);
             } else {
                 ReplaceFlashcardBackFace("green-status");
-                setRevealQuestOrAffirm(false);
+                setRevealInquiry(false);
             }
         }
 
@@ -175,7 +208,7 @@ export default function FlashcardsPage() {
                     <>
                         <div className = "flashcard-setup">
                             <h3 class = "status-style-red">flashcard ?</h3> {/* correct flashcard number. */}
-                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                            <button onClick = {() => Revealinquiry()} className = "reveal-question-or-affirmation-button">
                                 <img src = "./assets/Vectorx.png"/> {/* render ion icon correctly. */}
                             </button>
                         </div>
@@ -192,7 +225,7 @@ export default function FlashcardsPage() {
                     <>
                         <div className = "flashcard-setup">
                             <h3 class = "status-style-yellow">flashcard ?</h3> {/* correct flashcard number. */}
-                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                            <button onClick = {() => Revealinquiry()} className = "reveal-question-or-affirmation-button">
                                 <img src = "./assets/Vector_.png"/> {/* render ion icon correctly. */}
                             </button>
                         </div>
@@ -209,7 +242,7 @@ export default function FlashcardsPage() {
                     <>
                         <div className = "flashcard-setup">
                             <h3 class = "status-style-green">flashcard ?</h3> {/* correct flashcard number. */}
-                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                            <button onClick = {() => Revealinquiry()} className = "reveal-question-or-affirmation-button">
                                 <img src = "./assets/Vectorcheckmark.png"/> {/* render ion icon correctly. */}
                             </button>
                         </div>
@@ -226,7 +259,7 @@ export default function FlashcardsPage() {
                     <>
                         <div className = "flashcard-setup hidden">
                             <h3>flashcard ?</h3> {/* correct flashcard number. */}
-                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                            <button onClick = {() => Revealinquiry()} className = "reveal-question-or-affirmation-button">
                                 <img src = "./assets/Vectortriangular-arrow.png"/> {/* render ion icon correctly. */}
                             </button>
                         </div>

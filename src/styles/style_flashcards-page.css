@@ -27,11 +27,11 @@
     align-items: center;
 }
 
-.reveal-question-or-affirmation-button {
+.reveal-inquiry-button {
     font-size: 25px;
 }
 
-.question-or-affirmation-container {
+.inquiry-container {
     width: 299px;
     height: 131px;
     background: #FFFFD5;
@@ -50,7 +50,7 @@
     display: none;
 }
 
-.question-or-affirmation-container > h6 {
+.inquiry-container > h6 {
     font-family: 'Recursive';
     font-weight: 400;
     font-size: 12px;
