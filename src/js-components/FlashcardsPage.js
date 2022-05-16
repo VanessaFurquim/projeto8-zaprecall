@@ -5,9 +5,6 @@ import roundArrow from "../assets/setinha.png";
 
 export default function FlashcardsPage() {
 
-    const [revealInquiry, setRevealInquiry] = useState(false);
-    const [revealAnswer, setRevealAnswer] = useState(false);
-
     const deck = [
         {
             flashcardNumber: "1",
@@ -109,6 +106,9 @@ export default function FlashcardsPage() {
 	);
 
     function FlashcardsTemplate({flashcardQuestOrAffirm, flashcardAnswer}) {
+
+        const [revealInquiry, setRevealInquiry] = useState(false);
+
         return (
             <>
                 {revealInquiry === false ? (
@@ -145,15 +145,15 @@ export default function FlashcardsPage() {
             </>
 
         );
-    }
 
-    function Revealinquiry() {
-        setRevealInquiry(true);
+        function Revealinquiry() {
+            setRevealInquiry(true);
+        }
     }
 
     function RevealAnswer({flashcardQuestOrAffirm, flashcardAnswer}) {
-        console.log("answer function")
-        console.log(revealAnswer)
+
+        const [revealAnswer, setRevealAnswer] = useState(false);
     
         return (
             <>
