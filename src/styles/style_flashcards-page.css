@@ -46,8 +46,8 @@
     height: 20px;
 }
 
-.back-face-forward {
-    transform: rotateY(180deg);
+.hidden {
+    display: none;
 }
 
 .question-or-affirmation-container > h6 {
