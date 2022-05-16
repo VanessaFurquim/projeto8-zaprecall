@@ -1,14 +1,13 @@
 import "../styles/style_flashcards-page.css";
-import zaprecallLogoSmall from "../assets/logo-pequeno.png";
 import { useState } from "react/cjs/react.production.min";
+import zaprecallLogoSmall from "../assets/logo-pequeno.png";
+import roundArrow from "../assets/setinha.png";
 
-
-// creating main page (flashcards). //
 export default function FlashcardsPage() {
 
     const [revealQuestOrAffirm, setRevealQuestOrAffirm] = useState(false);
+    const [revealAnswer, setRevealAnswer] = useState(false);
 
-    // array of questions/affirmations. //
     const arrayOfFlashcards = [
         {
             questionOrAffirmation: "O que é JSX?",
@@ -44,25 +43,17 @@ export default function FlashcardsPage() {
         }
     ];
 
-    // randomizing order of questions. //
-    function randomizingIndex() { 
-	    return Math.random() - 0.5;
-    }
-
-    arrayOfFlashcards.sort(randomizingIndex);
+    arrayOfFlashcards.sort(() => (Math.random() - 0.5));
     
-    //creating new array with only 4 questions. //
     let arrayOfSortedFourFlashcards = [];
 
-    // redering 4 questions on screen ...
     for (let i = 0; i < arrayOfFlashcards.length / 2; i++) {
         arrayOfSortedFourFlashcards.push(arrayOfFlashcards[i])
     }
 
-    //... in this format. //
 	return (
-		<section className = "page-setup">
-			<div className = "logo-container">
+        <section className = "page-setup">
+            <div className = "logo-container">
                 <img className = "zaprecall-logo-small" src = {zaprecallLogoSmall} alt = "small logo" />
                 <h1 className = "zaprecall-title">ZapRecall</h1>
             </div>
@@ -72,50 +63,194 @@ export default function FlashcardsPage() {
                     flashcardQuestOrAffirm = {flashcard.QuestOrAffirm}
                     flashcardAnswer = {flashcard.answer}
                     />
-                ))}
-                
+                ))} 
             </div>
             <footer className = "footer">
-                {/* create function to count amount of answers */}
-                <p>numberOfAnswers/4 concluídos</p>
+                <p>numberOfAnswers/4 concluídos</p> {/* create function to count amount of answers */}
             </footer>
-		</section>
+        </section>
 	);
 
-    // flashcard template. //
-    function FlashcardsTemplate({flashcardAnswer}) {
+    function FlashcardsTemplate({flashcardQuestOrAffirm, flashcardAnswer}) {
+        return (
+            <>
+                {revealQuestOrAffirm === false ? (
+                    <>
+                        <div className = "flashcard-setup">
+                            <h3>flashcard ?</h3> {/* correct flashcard number. */}
+                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                            <img src = "./assets/Vectortriangular-arrow.png"/> {/* render ion icon correctly. */}
+                            </button>
+                        </div>
+                        <div className = "question-or-affirmation-container back-face-forward">
+                            <p>{flashcardQuestOrAffirm}</p>
+                            <button onClick = {() => RevealAnswer({flashcardQuestOrAffirm, flashcardAnswer})}>
+                                <img src = {roundArrow} class = "round-arrow" />
+                            </button>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <div className = "flashcard-setup back-face-forward">
+                            <h3>flashcard ?</h3> {/* correct flashcard number. */}
+                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                            <img src = "./assets/Vectortriangular-arrow.png"/> {/* render ion icon correctly. */}
+                            </button>
+                        </div>
+                        <div className = "question-or-affirmation-container">
+                            <p>{flashcardQuestOrAffirm}</p>
+                            <button onClick = {() => RevealAnswer()}>
+                                <img src = {roundArrow} class = "round-arrow" />
+                            </button>
+                        </div>
+                    </>
+                )}
+            </>
 
-        // correct flashcard number. //
-        let flashcardNumber = [1, 2, 3, 4];
+        );
+    }
+
+    function RevealQuestionOrAffirmation() {
+        setRevealQuestOrAffirm(true);
+    }
+
+    // function RevealAnswer() {
+    //     setRevealAnswer(true);
+    // }
+
+    function RevealAnswer({flashcardQuestOrAffirm, flashcardAnswer}) {
+
+        const [alteredFlashcardBackFace, setAlteredFlashcardBackFace] = useState("default");
     
         return (
             <>
-                <div className = "flashcard-setup">
-                    <h3>flashcard {flashcardNumber.map((number) => (number))}</h3>
-                    <button onClick = {() => revealQuestOrAffirm(flashcardAnswer)} className = "show-question-or-affirmation-button">
-                        {/* render ion icon correctly. */}
-                        ion
-                    </button>
-                </div>
+                {revealAnswer === false ? (
+                    <>
+                        <div className = "flashcard-setup back-face-forward">
+                            <h3>flashcard ?</h3> {/* correct flashcard number. */}
+                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                            <img src = "./assets/Vectortriangular-arrow.png"/> {/* render ion icon correctly. */}
+                            </button>
+                        </div>
+                        <div className = "question-or-affirmation-container">
+                            <p>{flashcardQuestOrAffirm}</p>
+                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                            <img src = "./assets/Vectortriangular-arrow.png"/> {/* render ion icon correctly. */}
+                        </button>
+                        </div>
+                    </>
+                ) : (
+                    <div className = "answer-container">
+                        <p>{flashcardAnswer}</p> {/* correct flashcard number. */}
+                        <button onClick = {() => MarkedRememberanceLevel("Não lembrei")} class = "answer-button red">
+                                <h6>Não lembrei</h6>
+                            </button>
+                            <button onClick = {() => MarkedRememberanceLevel("Quase não lembrei")} class = "answer-button yellow">
+                                <h6>Quase não lembrei</h6>
+                            </button>
+                            <button onClick = {() => MarkedRememberanceLevel("Zap!")}class = "answer-button green">
+                                <h6>Zap!</h6>
+                            </button>
+                        </div>
+                )}
             </>
         );
+    
+        function MarkedRememberanceLevel(props) {
+            if (props === "Não lembrei") {
+                setAlteredFlashcardBackFace(ReplaceFlashcardBackFace("red-status"));
+                setRevealQuestOrAffirm(false);
+            } else if (props === "Quase não lembrei") {
+                setAlteredFlashcardBackFace(ReplaceFlashcardBackFace("yellow-status"));
+                setRevealQuestOrAffirm(false);
+            } else {
+                setAlteredFlashcardBackFace(ReplaceFlashcardBackFace("green-status"));
+                setRevealQuestOrAffirm(false);
+            }
+        }
 
-        // create function to exibit question/affirmation. //
-        function revealQuestOrAffirm(props) {
-            setRevealQuestOrAffirm(true);
-            return (
-                <div className = "question-or-affirmation-container">
-                    <p>{props.flashcardAnswer}</p>
-                </div>
-            );
+        function ReplaceFlashcardBackFace(props) {
+            if (props ===  "red-status") {
+                {alteredFlashcardBackFace === false ? (
+                    <>
+                        <div className = "flashcard-setup">
+                            <h3 class = "status-style-red">flashcard ?</h3> {/* correct flashcard number. */}
+                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                                <img src = "./assets/Vectorx.png"/> {/* render ion icon correctly. */}
+                            </button>
+                        </div>
+                        <div className = "question-or-affirmation-container back-face-forward">
+                            <p>{flashcardQuestOrAffirm}</p>
+                            <button onClick = {() => RevealAnswer({flashcardQuestOrAffirm, flashcardAnswer})}>
+                                <img src = {roundArrow} class = "round-arrow" />
+                            </button>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        {/* default */}
+                        <div className = "flashcard-setup back-face-forward">
+                            <h3>flashcard ?</h3> {/* correct flashcard number. */}
+                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                                <img src = "./assets/Vectortriangular-arrow.png"/> {/* render ion icon correctly. */}
+                            </button>
+                        </div>
+                        <div className = "question-or-affirmation-container">
+                            <p>{flashcardQuestOrAffirm}</p>
+                            <button onClick = {() => RevealAnswer()}>
+                                <img src = {roundArrow} class = "round-arrow" />
+                            </button>
+                        </div>
+                    </>
+                )}
+            } else if (props ===  "yellow-status") {
+                {alteredFlashcardBackFace === false ? (
+                    <>
+                        <div className = "flashcard-setup">
+                            <h3 class = "status-style-yellow">flashcard ?</h3> {/* correct flashcard number. */}
+                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                                <img src = "./assets/Vector_.png"/> {/* render ion icon correctly. */}
+                            </button>
+                        </div>
+                        <div className = "question-or-affirmation-container back-face-forward">
+                            <p>{flashcardQuestOrAffirm}</p>
+                            <button onClick = {() => RevealAnswer({flashcardQuestOrAffirm, flashcardAnswer})}>
+                                <img src = {roundArrow} class = "round-arrow" />
+                            </button>
+                        </div>
+                    </>
+                ) : (
+                    "default"
+                )}
+            } else {
+                {alteredFlashcardBackFace === false ? (
+                    <>
+                        <div className = "flashcard-setup">
+                            <h3 class = "status-style-green">flashcard ?</h3> {/* correct flashcard number. */}
+                            <button onClick = {() => RevealQuestionOrAffirmation()} className = "reveal-question-or-affirmation-button">
+                                <img src = "./assets/Vectorcheckmark.png"/> {/* render ion icon correctly. */}
+                            </button>
+                        </div>
+                        <div className = "question-or-affirmation-container back-face-forward">
+                            <p>{flashcardQuestOrAffirm}</p>
+                            <button onClick = {() => RevealAnswer({flashcardQuestOrAffirm, flashcardAnswer})}>
+                                <img src = {roundArrow} class = "round-arrow" />
+                            </button>
+                        </div>
+                    </>
+                ) : (
+                    "default"
+                )}
+            }
         }
     }
+    
+    
+    // função para contar número de perguntas respondidas
+    // function NumberOfFlashcards() {
+    //     return (
+    //         numberOfFlashcards
+    //     );
+    // }
 }
 
-
-// função para contar número de perguntas respondidas
-// function NumberOfFlashcards() {
-//     return (
-//         numberOfFlashcards
-//     );
-// }
